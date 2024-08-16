@@ -367,118 +367,124 @@ let createResposta = async () => {
 let listarArquivos = async () => {
     let sufragioId = document.getElementById('sufragioId')?.value;
 
-    let arquivos = await getArquivos(sufragioId);
+    if (sufragioId != null && sufragioId != undefined && sufragioId != '') {
+        let arquivos = await getArquivos(sufragioId);
 
-    $('#list-arquivos').DataTable({
-        data: arquivos.data,
-        language: {
-            url: "/lib/pt_br.json"
-        },
-        columns: [
-            { title: 'ID', data: 'id' },
-            { title: 'Label', data: 'label' },
-            { title: 'Filename', data: 'filename' },
-            { title: 'Size (Kb)', data: 'size' },
-            { title: 'MimeType', data: 'mimeType' },
-            {
-                title: 'Ações',
-                data: null,
-                orderable: false,
-                render: (data, type, row) => {
-                    return `
+        $('#list-arquivos').DataTable({
+            data: arquivos.data,
+            language: {
+                url: "/lib/pt_br.json"
+            },
+            columns: [
+                { title: 'ID', data: 'id' },
+                { title: 'Label', data: 'label' },
+                { title: 'Filename', data: 'filename' },
+                { title: 'Size (Kb)', data: 'size' },
+                { title: 'MimeType', data: 'mimeType' },
+                {
+                    title: 'Ações',
+                    data: null,
+                    orderable: false,
+                    render: (data, type, row) => {
+                        return `
                         <button class="btn btn-danger col-6" onclick="removerArquivo(${data.id})">
                             <span id="spinner-delete-${data.id}" class="spinner-border spinner-border-sm"style="display:none;"></span>
                             Excluir
                         </button>
                         `;
-                }
-            },
-        ]
-    });
+                    }
+                },
+            ]
+        });
+    }
 };
 
 let listarQuestoes = async () => {
     let sufragioId = document.getElementById('sufragioId')?.value;
 
-    let questoes = await getQuestoes(sufragioId);
+    if (sufragioId != null && sufragioId != undefined && sufragioId != '') {
+        let questoes = await getQuestoes(sufragioId);
 
-    $('#list-questoes').DataTable({
-        data: questoes.data,
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                text: 'Nova Questão',
-                className: 'btn-primary',
-                action: function (e, dt, node, config) {
-                    window.location = `/admin/votacao/${sufragioId}/questoes`
-                },
-                init: function (api, node, config) {
-                    $(node).removeClass('btn-secondary')
+        $('#list-questoes').DataTable({
+            data: questoes.data,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    text: 'Nova Questão',
+                    className: 'btn-primary',
+                    action: function (e, dt, node, config) {
+                        window.location = `/admin/votacao/${sufragioId}/questoes`
+                    },
+                    init: function (api, node, config) {
+                        $(node).removeClass('btn-secondary')
+                    }
                 }
-            }
-        ],
-        language: {
-            url: "/lib/pt_br.json"
-        },
-        columns: [
-            { title: 'ID', data: 'id' },
-            { title: 'Label', data: 'label' },
-            { title: 'Complemento', data: 'complemento' },
-            { title: 'Limite de escolhas', data: 'limiteEscolhas' },
-            {
-                title: 'Ações',
-                data: null,
-                orderable: false,
-                render: (data, type, row) => {
-                    return `
+            ],
+            language: {
+                url: "/lib/pt_br.json"
+            },
+            columns: [
+                { title: 'ID', data: 'id' },
+                { title: 'Label', data: 'label' },
+                { title: 'Complemento', data: 'complemento' },
+                { title: 'Limite de escolhas', data: 'limiteEscolhas' },
+                {
+                    title: 'Ações',
+                    data: null,
+                    orderable: false,
+                    render: (data, type, row) => {
+                        return `
                         <a class="btn btn-primary col-6" href="/admin/votacao/${data?.sufragioId}/questoes/${data?.id}">Editar</a>
                         <a class="btn btn-primary col-6" href="/admin/votacao/${data?.sufragioId}/questoes/${data?.id}/respostas">Respostas</a>
                         `;
-                }
-            },
-        ]
-    });
+                    }
+                },
+            ]
+        });
+    }
 };
 
 let listarRespostas = async () => {
     let sufragioId = document.getElementById('sufragioId')?.value;
-    let questaoId = document.getElementById('questaoId')?.value;
 
-    let respostas = await getRespostas(questaoId);
+    if (sufragioId != null && sufragioId != undefined && sufragioId != '') {
+        let questaoId = document.getElementById('questaoId')?.value;
+        let respostas = await getRespostas(questaoId);
 
-    $('#list-respostas').DataTable({
-        data: respostas.data,
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                text: 'Nova resposta',
-                className: 'btn-primary',
-                action: function (e, dt, node, config) {
-                    window.location = `/admin/votacao/${sufragioId}/questoes/${questaoId}/respostas`
-                },
-                init: function (api, node, config) {
-                    $(node).removeClass('btn-secondary')
+        $('#list-respostas').DataTable({
+            data: respostas.data,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    text: 'Nova resposta',
+                    className: 'btn-primary',
+                    action: function (e, dt, node, config) {
+                        window.location = `/admin/votacao/${sufragioId}/questoes/${questaoId}/respostas`
+                    },
+                    init: function (api, node, config) {
+                        $(node).removeClass('btn-secondary')
+                    }
                 }
-            }
-        ],
-        language: {
-            url: "/lib/pt_br.json"
-        },
-        columns: [
-            { title: 'ID', data: 'id' },
-            { title: 'Label', data: 'label' },
-            {
-                title: 'Acoes',
-                data: null,
-                orderable: false,
-                render: (data, type, row) => {
-                    return `
+            ],
+            language: {
+                url: "/lib/pt_br.json"
+            },
+            columns: [
+                { title: 'ID', data: 'id' },
+                { title: 'Label', data: 'label' },
+                {
+                    title: 'Acoes',
+                    data: null,
+                    orderable: false,
+                    render: (data, type, row) => {
+                        return `
                         <a class="btn btn-primary col-12" href="/admin/votacao/${data?.questao.sufragioId}/questoes/${data?.questao.id}/respostas/${data?.id}">Editar</a>
                         `;
-                }
-            },
-        ]
-    });
+                    }
+                },
+            ]
+        });
+    }
 };
 
 document.addEventListener("DOMContentLoaded", function (e) {
