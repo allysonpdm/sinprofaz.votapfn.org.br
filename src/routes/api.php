@@ -30,6 +30,8 @@ Route::name('sufragios.')->prefix('sufragios/')->group(function () {
     Route::post('votar', [SufragiosController::class, 'votar']);
     Route::get('relatorio/{sufragioId}', [SufragiosController::class, 'relatorio']);
 });
+Route::get('sufragios/em-andamento', [SufragiosController::class, 'emAndamento']);
+Route::get('sufragios/encerradas', [SufragiosController::class, 'encerradas']);
 Route::apiResource('sufragios', SufragiosController::class);
 Route::apiResource('respostas', RespostasController::class);
 Route::apiResource('questoes', QuestoesController::class);

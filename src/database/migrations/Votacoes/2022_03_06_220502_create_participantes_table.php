@@ -17,7 +17,7 @@ class CreateParticipantesTable extends Migration
             $table->id();
             $table->foreignId('sufragioId')->index('participantes_sufragioId_foreign');
             $table->string('cpf', 11)->index('participantes_cpf_idx');
-            $table->string('ip', 45);
+            $table->string('ip', 15);
             $table->dateTime('votouEm');
             $table->timestamp('createdAt')->useCurrent();
             $table->timestamp('updatedAt')->useCurrentOnUpdate()->nullable()->useCurrent();

@@ -10,12 +10,12 @@
                 <div class="card-body">
                     <nav>
                         <ul class="nav nav-pills nav-justified btn-group btn-group-toggle btn-hover-style-1">
-                            <a href="{{ route('gerenciador') }}">
+                            <a href="{{ route('admin.gerenciador') }}">
                                 <li class="btn btn-primary" data-toggle="tab">
                                     Gerenciar votações
                                 </li>
                             </a>
-                            <a href="{{ route('resultados') }}">
+                            <a href="{{ route('admin.resultados') }}">
                                 <li class="btn btn-primary" data-toggle="tab">
                                     Resultados
                                 </li>

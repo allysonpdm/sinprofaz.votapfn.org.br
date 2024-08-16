@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
+    return redirect('https://sinprofaz.org.br/');
+});
+
+Route::get('/votacao/{id?}', function () {
     return view('associado');
 });
 
@@ -23,9 +26,11 @@ Auth::routes([
 ]);
 
 Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
-Route::get('/resultados', [App\Http\Controllers\HomeController::class, 'resultados'])->name('resultados');
-Route::get('/gerenciador', [App\Http\Controllers\HomeController::class, 'gerenciador'])->name('gerenciador');
-Route::get('/votacao/{id?}', [App\Http\Controllers\HomeController::class, 'votacao'])->name('votacao');
-Route::get('/votacao/{sufragioId?}/arquivos', [App\Http\Controllers\HomeController::class, 'arquivos'])->name('arquivos');
-Route::get('/votacao/{sufragioId}/questoes/{id?}', [App\Http\Controllers\HomeController::class, 'questoes'])->name('questao');
-Route::get('/votacao/{sufragioId}/questoes/{questaoId}/respostas/{id?}', [App\Http\Controllers\HomeController::class, 'respostas'])->name('resposta');
+Route::name('admin.')->prefix('admin')->group(function () {
+    Route::get('/resultados', [App\Http\Controllers\HomeController::class, 'resultados'])->name('resultados');
+    Route::get('/gerenciador', [App\Http\Controllers\HomeController::class, 'gerenciador'])->name('gerenciador');
+    Route::get('/votacao/{id?}', [App\Http\Controllers\HomeController::class, 'votacao'])->name('votacao');
+    Route::get('/votacao/{sufragioId?}/arquivos', [App\Http\Controllers\HomeController::class, 'arquivos'])->name('arquivos');
+    Route::get('/votacao/{sufragioId}/questoes/{id?}', [App\Http\Controllers\HomeController::class, 'questoes'])->name('questao');
+    Route::get('/votacao/{sufragioId}/questoes/{questaoId}/respostas/{id?}', [App\Http\Controllers\HomeController::class, 'respostas'])->name('resposta');
+});

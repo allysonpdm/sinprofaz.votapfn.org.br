@@ -35,7 +35,7 @@
                             @endif
                             <div class="col"></div>
                             <div class="col-3">
-                                <a href="{{ route('questao', ['id' => $questao->id, 'sufragioId'=>$votacao->id]) }}">
+                                <a href="{{ route('admin.questao', ['id' => $questao->id, 'sufragioId'=>$votacao->id]) }}">
                                     <li class="btn btn-secondary form-control">
                                         Questões
                                     </li>

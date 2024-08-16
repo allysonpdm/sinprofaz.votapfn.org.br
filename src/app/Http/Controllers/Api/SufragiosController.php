@@ -56,4 +56,37 @@ class SufragiosController extends BaseController
     {
         return $this->service->relatorio($id);
     }
+
+    public function emAndamento(IndexRequest $request): Response
+    {
+        $now = now()->format('Y-m-d H:i:s');
+        $request = $request->validated();
+        $request['wheres'] = [
+            [
+                'column' => 'inicio',
+                'condition' => '<=',
+                'search' => $now,
+            ],
+            [
+                'column' => 'fim',
+                'condition' => '>=',
+                'search' => $now,
+            ]
+        ];
+        return $this->service->index($request);
+    }
+
+    public function encerradas(IndexRequest $request): Response
+    {
+        $now = now()->format('Y-m-d H:i:s');
+        $request = $request->validated();
+        $request['wheres'] = [
+            [
+                'column' => 'fim',
+                'condition' => '<=',
+                'search' => $now,
+            ]
+        ];
+        return $this->service->index($request);
+    }
 }

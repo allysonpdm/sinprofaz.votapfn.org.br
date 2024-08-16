@@ -217,5 +217,4 @@ return [
     'smtp_password' => env('SMTP_PASSWORD', null),
     'smtp_host' => env('SMTP_HOST', null),
     'smtp_host_port' => env('SMTP_HOST_PORT', null),
-
 ];

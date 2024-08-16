@@ -30,7 +30,7 @@
                         <div class="row mt-3">
                             <div class="col"></div>
                             <div class="col-3">
-                                <a href="{{ route('votacao', ['id' => $votacao->id]) }}">
+                                <a href="{{ route('admin.votacao', ['id' => $votacao->id]) }}">
                                     <li class="btn btn-secondary form-control">
                                         Votação
                                     </li>
@@ -43,7 +43,7 @@
                                 </button>
                             </div>
                             <div class="col-3">
-                                <a href="{{ route('questao', ['sufragioId' => $votacao->id]) }}">
+                                <a href="{{ route('admin.questao', ['sufragioId' => $votacao->id]) }}">
                                     <li class="btn btn-primary form-control">
                                         Questões
                                     </li>

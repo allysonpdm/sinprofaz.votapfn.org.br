@@ -54,7 +54,7 @@
                             @endif
                             <div class="col"></div>
                             <div class="col-3">
-                                <a href="{{ route('gerenciador') }}">
+                                <a href="{{ route('admin.gerenciador') }}">
                                     <li class="btn btn-secondary form-control">
                                         Voltar
                                     </li>

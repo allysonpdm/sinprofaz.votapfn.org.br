@@ -46,7 +46,7 @@
                             @endif
                             <div class="col"></div>
                             <div class="col-3">
-                                <a href="{{ route('arquivos', ['sufragioId' => $votacao->id]) }}">
+                                <a href="{{ route('admin.arquivos', ['sufragioId' => $votacao->id]) }}">
                                     <li class="btn btn-secondary form-control">
                                         Arquivos
                                     </li>
