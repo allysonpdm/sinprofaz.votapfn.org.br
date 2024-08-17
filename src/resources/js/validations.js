@@ -43,7 +43,7 @@ async function getSufragio(){
 
 let getAssociado = async() =>{
     let url = '/api/associados';
-    data = {
+    let data = {
         "sufragioId": votacaoId,
         "cpf": getCpf().value
     };
@@ -313,7 +313,7 @@ let setLinks = (arquivos)=>{
 
 let setErrors = (erros)=>{
     Object.entries(erros).forEach(([key, mensagem]) => {
-        element = document.querySelector(`[data-erro="${key}"]`).innerHTML = mensagem;
+        let element = document.querySelector(`[data-erro="${key}"]`).innerHTML = mensagem;
     });
 };
 

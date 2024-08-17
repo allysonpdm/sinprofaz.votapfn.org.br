@@ -11,11 +11,9 @@
     <title>{{ config('app.name') }}</title>
 
     <!-- Bootstrap core CSS -->
-    <!--<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">-->
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
     <!-- Custom fonts for this template -->
     <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -318,10 +316,10 @@
     <script src="/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
     <!-- Custom scripts for this template -->
-    @vite('resources/js/creative.js')
+    <script src="/js/creative.js"></script>
 
     <!-- owl.carousel js -->
-    @vite('resources/js/owl.carousel.min.js')
+    <script src="/js/owl.carousel.min.js"></script>
 
     <script>
         $(document).ready(function() {

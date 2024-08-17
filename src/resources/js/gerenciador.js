@@ -58,7 +58,7 @@ $(document).ready(async () => {
                 text: 'Nova votação',
                 className: 'btn-primary',
                 action: function ( e, dt, node, config ) {
-                    window.location=`admin/votacao`
+                    window.location=`/admin/votacao`
                 },
                 init: function(api, node, config) {
                     $(node).removeClass('btn-secondary')

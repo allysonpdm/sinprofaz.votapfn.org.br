@@ -23,6 +23,7 @@
         "datatables.net": "^2.1.4",
         "font-awesome": "^4.7.0",
         "glob": "^11.0.0",
-        "jquery": "^3.7.1"
+        "jquery": "^3.7.1",
+        "owl.carousel": "^2.3.4"
     }
 }
