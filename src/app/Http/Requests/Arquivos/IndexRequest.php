@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Arquivos;
 
+use ArchCrudLaravel\App\Http\Requests\Traits\IndexRules;
 use Illuminate\Support\Facades\Gate;
 
 class IndexRequest extends ArquivosRequest
@@ -23,7 +24,7 @@ class IndexRequest extends ArquivosRequest
      */
     public function rules(): array
     {
-        return $this->indexRequest();
+        return $this->indexRules();
     }
 
 }

@@ -14,10 +14,11 @@ use App\Http\Requests\Sufragios\{
 };
 use App\Services\Api\SufragiosService;
 use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 class SufragiosController extends BaseController
 {
-    protected $nameService = SufragiosService::class;
+    protected ?string $nameService = SufragiosService::class;
 
     public function store(StoreRequest $request): Response
     {
@@ -52,7 +53,12 @@ class SufragiosController extends BaseController
         ]);
     }
 
-    public function relatorio(int $id): Response
+    public function relatorioDownload(int $id): Response
+    {
+        return $this->service->relatorioDownload($id);
+    }
+
+    public function relatorio(int $id): View
     {
         return $this->service->relatorio($id);
     }

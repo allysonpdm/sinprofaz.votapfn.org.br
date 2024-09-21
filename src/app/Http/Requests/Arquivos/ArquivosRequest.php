@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\{
 
 abstract class ArquivosRequest extends BaseRequest
 {
-    protected $model = Arquivos::class;
+    protected string $model = Arquivos::class;
 
     protected function hasGroupPermission(): bool
     {

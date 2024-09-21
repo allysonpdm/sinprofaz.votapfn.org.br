@@ -31,7 +31,7 @@ class UpdateRequest extends QuestoesRequest
                 Rule::unique('questoes')->where(function ($query) {
                     return $query->where('label', $this->label)
                         ->where('sufragioId', $this->sufragioId);
-                })
+                })->ignore($this->input('id'))
             ],
             'complemento' => 'nullable|string|max:1000',
             'limiteEscolhas' => 'required|integer|min:1'

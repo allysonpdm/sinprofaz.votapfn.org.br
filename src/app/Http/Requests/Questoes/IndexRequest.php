@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Questoes;
 
+use App\Models\Votacoes\Questoes;
+use ArchCrudLaravel\App\Http\Requests\Traits\IndexRules;
 use Illuminate\Support\Facades\Gate;
 
 class IndexRequest extends QuestoesRequest
@@ -23,7 +25,6 @@ class IndexRequest extends QuestoesRequest
      */
     public function rules(): array
     {
-        return $this->indexRequest();
+        return $this->indexRules();
     }
-
 }

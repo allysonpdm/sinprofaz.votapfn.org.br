@@ -4,7 +4,7 @@ namespace App\Http\Requests\Associados;
 
 use App\Models\Votacoes\Questoes;
 use App\Rules\IsFiliadoRule;
-use ArchCrudLaravel\App\Rules\CpfRule;
+use ArchCrudLaravel\App\Rules\CpfValidationRule;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
@@ -43,7 +43,7 @@ class IsAutorizadoRequest extends AssociadosRequest
                     ->where(function($query){
                         $query->where('sufragioId', $this->sufragioId);
                     }),
-                new CpfRule(),
+                new CpfValidationRule(),
             ],
         ];
     }

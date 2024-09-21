@@ -15,7 +15,7 @@ class Sufragios extends BaseModel
     public const UPDATED_AT = 'updatedAt';
     public const DELETED_AT = 'deletedAt';
     public $table = 'sufragios';
-    public static $searchable = [
+    public array $searchable = [
         'id',
         'nome',
         'descricao',
@@ -46,6 +46,11 @@ class Sufragios extends BaseModel
     public function arquivos(): HasMany
     {
         return $this->hasMany(Arquivos::class,'sufragioId');
+    }
+
+    public function restricoes(): HasMany
+    {
+        return $this->hasMany(Restricao::class,'sufragioId');
     }
 
     public function mapInto(): SufragiosResource

@@ -12,14 +12,14 @@ use ArchCrudLaravel\App\Services\BaseService;
 
 class RespostasService extends BaseService
 {
-    protected $nameModel = Respostas::class;
-    protected $nameCollection = RespostasCollection::class;
-    protected $nameResource = RespostasResource::class;
+    protected ?string $nameModel = Respostas::class;
+    protected ?string $nameCollection = RespostasCollection::class;
+    protected ?string $nameResource = RespostasResource::class;
 
     public function __construct()
     {
         parent::__construct();
-        $this->relationships = self::getRelationships($this->model);
+        $this->relationships = self::getRelationshipNames($this->model);
     }
 
 }

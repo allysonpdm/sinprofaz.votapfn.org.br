@@ -15,7 +15,7 @@ use Illuminate\Http\Response;
 
 class RespostasController extends BaseController
 {
-    protected $nameService = RespostasService::class;
+    protected ?string $nameService = RespostasService::class;
 
     public function store(StoreRequest $request): Response
     {

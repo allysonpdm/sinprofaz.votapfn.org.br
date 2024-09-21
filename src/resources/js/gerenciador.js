@@ -1,5 +1,8 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
+import $ from 'jquery';
+import 'datatables.net-bs4';
+import 'datatables.net-buttons';
 
 async function getSufragios(perPage = 1000){
     let url = `/api/sufragios?perPage=${perPage}`;
@@ -55,14 +58,21 @@ $(document).ready(async () => {
         dom: 'Bfrtip',
         buttons: [
             {
+                text: 'Voltar para o painel',
+                className: 'btn btn-secondary mb-2',
+                action: function ( e, dt, node, config ) {
+                    window.location=`/admin`
+                }
+            },
+            {
                 text: 'Nova votação',
-                className: 'btn-primary',
+                className: 'btn btn-primary mb-2',
                 action: function ( e, dt, node, config ) {
                     window.location=`/admin/votacao`
                 },
                 init: function(api, node, config) {
                     $(node).removeClass('btn-secondary')
-                 }
+                }
             }
         ],
         language: {
@@ -75,11 +85,12 @@ $(document).ready(async () => {
             { title: 'Fim', data: '@fim' },
             {
                 title: 'Status',
+                className: 'status-column',
                 data: null, render: ( data, type, row ) => {
                     let agora = new Date();
                     let inicio = new Date(data.inicio.replace(" ", "T") + "-03:00");
                     let fim = new Date(data.fim.replace(" ", "T") + "-03:00");
-                    if(fim <= agora ){
+                    if(inicio <= agora || fim <= agora ){
                         return `
                         <button class="btn btn-success" onClick="window.location='/votacao/${data.id}';">Ir</button>
                         <button class="disabled btn btn-primary" disabled>Editar</button>

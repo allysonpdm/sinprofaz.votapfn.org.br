@@ -1,6 +1,11 @@
+import $ from 'jquery';
+import 'datatables.net-bs4';
+import 'datatables.net-buttons';
+
 var NOME;
 var QUESTAO_LABEL;
 var RESPOSTA_LABEL;
+
 
 async function getRespostas(questaoId) {
     let url = `/api/respostas`;
@@ -80,6 +85,23 @@ let getFieldsVotacao = () => {
         inicio: document.getElementById('inicio').value.replace('T', ' '),
         fim: document.getElementById('fim').value.replace('T', ' '),
     };
+
+    let restricoes = [];
+    let restricaoUfSelect = document.getElementById('restricao_uf');
+
+    for (let option of restricaoUfSelect.selectedOptions) {
+        if (option.value) {
+            restricoes.push({
+                column: 'uf_lotacao',
+                value: option.value
+            });
+        }
+    }
+
+    if (restricoes.length > 0) {
+        obj['restricoes'] = restricoes;
+    }
+
     if (NOME != document.getElementById('nome').value) {
         obj['nome'] = document.getElementById('nome').value;
     }
@@ -202,7 +224,10 @@ async function sendArquivo() {
     let url = `/api/arquivos`;
     return fetch(`${url}`, {
         method: 'POST',
-        body: form
+        body: form,
+        headers: {
+            'Accept': 'application/json'
+        }
     })
         .then(response => { return response; })
         .catch(error => {
@@ -212,13 +237,23 @@ async function sendArquivo() {
 
 async function deleteArquivo(id) {
     let url = `/api/arquivos/${id}`;
-    return fetch(`${url}`, {
+    return fetch(url, {
         method: 'DELETE',
+        headers: {
+            'Accept': 'application/json'
+        }
     })
-        .then(response => { return response; })
-        .catch(error => {
-            console.error(error);
-        });
+    .then(response => {
+        if (response.status === 200) {
+            window.location.reload(); // Recarrega a página se o status for 200
+        } else {
+            console.error(`Failed to delete: ${response.status}`);
+        }
+        return response;
+    })
+    .catch(error => {
+        console.error(error);
+    });
 };
 
 async function sendResposta() {
@@ -307,6 +342,7 @@ let createArquivo = async () => {
     }
 };
 
+/* @__PURE__ */
 let removerArquivo = async (id) => {
     spinnerShow(`spinner-delete-${id}`);
     let sufragioId = document.getElementById('sufragioId').value;
@@ -387,7 +423,7 @@ let listarArquivos = async () => {
                     orderable: false,
                     render: (data, type, row) => {
                         return `
-                        <button class="btn btn-danger col-6" onclick="removerArquivo(${data.id})">
+                        <button class="btn btn-danger col-6 btn-remove-file" data-id="${data.id}">
                             <span id="spinner-delete-${data.id}" class="spinner-border spinner-border-sm"style="display:none;"></span>
                             Excluir
                         </button>
@@ -395,6 +431,11 @@ let listarArquivos = async () => {
                     }
                 },
             ]
+        });
+
+        $('#list-arquivos').on('click', '.btn-remove-file', function () {
+            let id = $(this).data('id');
+            removerArquivo(id);
         });
     }
 };
@@ -405,42 +446,45 @@ let listarQuestoes = async () => {
     if (sufragioId != null && sufragioId != undefined && sufragioId != '') {
         let questoes = await getQuestoes(sufragioId);
 
-        $('#list-questoes').DataTable({
-            data: questoes.data,
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    text: 'Nova Questão',
-                    className: 'btn-primary',
-                    action: function (e, dt, node, config) {
-                        window.location = `/admin/votacao/${sufragioId}/questoes`
-                    },
-                    init: function (api, node, config) {
-                        $(node).removeClass('btn-secondary')
+        if(questoes && questoes.data){
+            $('#list-questoes').DataTable({
+                data: questoes.data,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        text: 'Nova Questão',
+                        className: 'btn btn-primary mb-2',
+                        action: function (e, dt, node, config) {
+                            window.location = `/admin/votacao/${sufragioId}/questoes`
+                        },
+                        init: function (api, node, config) {
+                            $(node).removeClass('btn-secondary')
+                        }
                     }
-                }
-            ],
-            language: {
-                url: "/lib/pt_br.json"
-            },
-            columns: [
-                { title: 'ID', data: 'id' },
-                { title: 'Label', data: 'label' },
-                { title: 'Complemento', data: 'complemento' },
-                { title: 'Limite de escolhas', data: 'limiteEscolhas' },
-                {
-                    title: 'Ações',
-                    data: null,
-                    orderable: false,
-                    render: (data, type, row) => {
-                        return `
-                        <a class="btn btn-primary col-6" href="/admin/votacao/${data?.sufragioId}/questoes/${data?.id}">Editar</a>
-                        <a class="btn btn-primary col-6" href="/admin/votacao/${data?.sufragioId}/questoes/${data?.id}/respostas">Respostas</a>
-                        `;
-                    }
+                ],
+                language: {
+                    url: "/lib/pt_br.json"
                 },
-            ]
-        });
+                columns: [
+                    { title: 'ID', data: 'id' },
+                    { title: 'Label', data: 'label', className: 'word-wrap' },
+                    { title: 'Complemento', data: 'complemento', className: 'word-wrap' },
+                    { title: 'Limite de escolhas', data: 'limiteEscolhas' },
+                    {
+                        title: 'Ações',
+                        className: 'acao-column',
+                        data: null,
+                        orderable: false,
+                        render: (data, type, row) => {
+                            return `
+                            <a class="btn btn-primary" href="/admin/votacao/${data?.sufragioId}/questoes/${data?.id}">Editar</a>
+                            <a class="btn btn-primary" href="/admin/votacao/${data?.sufragioId}/questoes/${data?.id}/respostas">Respostas</a>
+                            `;
+                        }
+                    },
+                ]
+            });
+        }
     }
 };
 
@@ -451,41 +495,44 @@ let listarRespostas = async () => {
         let questaoId = document.getElementById('questaoId')?.value;
         let respostas = await getRespostas(questaoId);
 
-        $('#list-respostas').DataTable({
-            data: respostas.data,
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    text: 'Nova resposta',
-                    className: 'btn-primary',
-                    action: function (e, dt, node, config) {
-                        window.location = `/admin/votacao/${sufragioId}/questoes/${questaoId}/respostas`
-                    },
-                    init: function (api, node, config) {
-                        $(node).removeClass('btn-secondary')
+        if (respostas && respostas.data) {
+            $('#list-respostas').DataTable({
+                data: respostas.data, // linha 455
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        text: 'Nova resposta',
+                        className: 'btn btn-primary mb-2',
+                        action: function (e, dt, node, config) {
+                            window.location = `/admin/votacao/${sufragioId}/questoes/${questaoId}/respostas`
+                        },
+                        init: function (api, node, config) {
+                            $(node).removeClass('btn-secondary')
+                        }
                     }
-                }
-            ],
-            language: {
-                url: "/lib/pt_br.json"
-            },
-            columns: [
-                { title: 'ID', data: 'id' },
-                { title: 'Label', data: 'label' },
-                {
-                    title: 'Acoes',
-                    data: null,
-                    orderable: false,
-                    render: (data, type, row) => {
-                        return `
-                        <a class="btn btn-primary col-12" href="/admin/votacao/${data?.questao.sufragioId}/questoes/${data?.questao.id}/respostas/${data?.id}">Editar</a>
-                        `;
-                    }
+                ],
+                language: {
+                    url: "/lib/pt_br.json"
                 },
-            ]
-        });
+                columns: [
+                    { title: 'ID', data: 'id' },
+                    { title: 'Label', data: 'label', className: 'word-wrap' },
+                    {
+                        title: 'Ações',
+                        className: 'acao-column',
+                        data: null,
+                        orderable: false,
+                        render: (data, type, row) => {
+                            return `
+                            <a class="btn btn-primary col-12" href="/admin/votacao/${data?.questao.sufragioId}/questoes/${data?.questao.id}/respostas/${data?.id}">Editar</a>
+                            `;
+                        }
+                    },
+                ]
+            });
+        }
     }
-};
+}
 
 document.addEventListener("DOMContentLoaded", function (e) {
     NOME = document.getElementById('nome')?.value;
@@ -516,7 +563,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         let response = await deleteSufragio();
         spinnerStop('spinner-excluir');
         if (response.status == 200) {
-            window.location = `/gerenciador/`;
+            window.location = `/admin/gerenciador/`;
         }
     });
 

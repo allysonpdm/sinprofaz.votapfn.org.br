@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Sufragios;
 
-use App\Rules\CnpjRule;
-use App\Rules\CpfRule;
+use App\Rules\RestricaoRule;
+use App\Rules\UniqueRestricaoRule;
 
 class StoreRequest extends SufragiosRequest
 {
@@ -30,6 +30,13 @@ class StoreRequest extends SufragiosRequest
             'descricao' => 'nullable|string|max:1000',
             'inicio' => 'required|date_format:Y-m-d H:i',
             'fim' => 'required|date_format:Y-m-d H:i',
+            'restricoes' => [
+                'nullable',
+                'array',
+                new UniqueRestricaoRule
+            ],
+            'restricoes.*.column' => 'required_with:restricoes|string|max:255',
+            'restricoes.*.value' => 'required_with:restricoes|string|max:255',
         ];
     }
 }

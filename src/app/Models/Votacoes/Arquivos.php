@@ -15,7 +15,7 @@ class Arquivos extends BaseModel
     public const UPDATED_AT = 'updatedAt';
     public const DELETED_AT = 'deletedAt';
     public $table = 'arquivos';
-    public static $searchable = [
+    public array $searchable = [
         'id',
         'sufragioId',
         'filename',

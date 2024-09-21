@@ -2,6 +2,7 @@
 
 namespace App\Services\Api;
 
+use App\Exceptions\SoftDeleteException;
 use App\Http\Resources\Votacoes\Arquivos\{
     ArquivosCollection,
     ArquivosResource
@@ -14,14 +15,14 @@ use Illuminate\Support\Str;
 
 class ArquivosService extends BaseService
 {
-    protected $nameModel = Arquivos::class;
-    protected $nameCollection = ArquivosCollection::class;
-    protected $nameResource = ArquivosResource::class;
+    protected ?string $nameModel = Arquivos::class;
+    protected ?string $nameCollection = ArquivosCollection::class;
+    protected ?string $nameResource = ArquivosResource::class;
 
     public function __construct()
     {
         parent::__construct();
-        $this->relationships = self::getRelationships($this->model);
+        $this->relationships = self::getRelationshipNames($this->model);
     }
 
     protected function beforeInsert()
@@ -38,9 +39,19 @@ class ArquivosService extends BaseService
         return $this;
     }
 
-    public function beforeDelete($id){
-        $arquivo = Arquivos::find($id);
-        unlink(public_path('pdfs') . "/$arquivo->sufragioId/{$arquivo->filename}");
+    public function deleteRecord()
+    {
+        if (!self::isActive($this->register, $this->model::DELETED_AT, $this->force)) {
+            throw new SoftDeleteException;
+        }
+
+        unlink(public_path('pdfs') . "/{$this->register->sufragioId}/{$this->register->filename}");
+
+        $this->model = self::hasRelationships($this->register)
+            ? $this->softOrHardDelete(
+                register: $this->register
+            )
+            : $this->register->delete();
         return $this;
     }
 

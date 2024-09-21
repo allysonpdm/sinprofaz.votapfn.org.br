@@ -15,7 +15,7 @@ use Illuminate\Http\Response;
 
 class QuestoesController extends BaseController
 {
-    protected $nameService = QuestoesService::class;
+    protected ?string $nameService = QuestoesService::class;
 
     public function store(StoreRequest $request): Response
     {

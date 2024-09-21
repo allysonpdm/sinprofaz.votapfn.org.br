@@ -11,7 +11,7 @@ class Associados extends BaseModel
     use HasFactory;
     protected $connection = 'mysql_area_filiado';
     public $table = 'usuarios';
-    public static $searchable = [
+    public array $searchable = [
         'id',
         'nome',
         'cpf'

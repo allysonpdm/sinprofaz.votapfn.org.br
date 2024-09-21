@@ -8,12 +8,12 @@ import './bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '@fortawesome/fontawesome-free/js/all.min.js';
-
+import $ from 'jquery';
 import { createApp } from 'vue';
 
-import $ from 'jquery';
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel';
+//import $ from 'jquery';
+//import 'owl.carousel/dist/assets/owl.carousel.css';
+//import 'owl.carousel';
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
  * registering components with the application instance so they are ready

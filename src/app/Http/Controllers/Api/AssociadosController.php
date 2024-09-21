@@ -12,7 +12,7 @@ use Illuminate\Http\Response;
 
 class AssociadosController extends BaseController
 {
-    protected $nameService = AssociadosService::class;
+    protected ?string $nameService = AssociadosService::class;
 
     public function isAutorizado(IsAutorizadoRequest $request): Response
     {

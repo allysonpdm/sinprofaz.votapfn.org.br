@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,6 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::get('/votacao/{sufragioId}/questoes/{id?}', [App\Http\Controllers\HomeController::class, 'questoes'])->name('questao');
     Route::get('/votacao/{sufragioId}/questoes/{questaoId}/respostas/{id?}', [App\Http\Controllers\HomeController::class, 'respostas'])->name('resposta');
 });
+
+Route::get('health', HealthCheckResultsController::class);
+Route::get('relatorio', [App\Http\Controllers\HomeController::class, 'relatorio']);

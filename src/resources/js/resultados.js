@@ -31,6 +31,10 @@ async function getSufragio(id) {
         });
 };
 
+function redirectToRelatorio(id){
+    window.location.href = `/api/sufragios/relatorio/${id}`;
+}
+
 async function getRelatorio(id) {
     let spinnerShow = (id) => {
         document.getElementById(id).style.display = 'inline-block';
@@ -77,36 +81,46 @@ $(document).ready(async () => {
 
     $('#votacoes').DataTable({
         data: sufragios.data,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                text: 'Voltar para o painel',
+                className: 'btn btn-secondary mb-2',
+                action: function ( e, dt, node, config ) {
+                    window.location=`/admin`
+                }
+            }
+        ],
         language: {
             url: "/lib/pt_br.json"
         },
         columns: [
             { title: 'ID', data: 'id', class: 'foo' },
-            { title: 'Nome', data: 'nome' },
+            { title: 'Nome', data: 'nome', className: 'word-wrap'},
             { title: 'Início', data: '@inicio' },
             { title: 'Fim', data: '@fim' },
             {
                 title: 'Status',
+                className: 'status-column',
                 data: null,
                 render: (data, type, row) => {
                     let agora = new Date();
                     let inicio = new Date(data.inicio.replace(" ", "T") + "-03:00");
                     let fim = new Date(data.fim.replace(" ", "T") + "-03:00");
 
-                    if (fim <= agora) {
-                        return `
-                            <button class="btn btn-primary relatorio-btn" data-id="${data.id}">
-                                <span id="spinner-relatorio-${data.id}" class="spinner-border spinner-border-sm" style="display:none;"></span>
-                                Relatório
-                            </button>
-                            <button id="btn${data.id}" class="btn btn-primary resultado-btn" data-votacao-id="${data.id}">Resultado</button>
-                        `;
-                    }
+
                     if (inicio > agora) {
                         return '<button class="disabled btn btn-primary" disabled>Não iniciada</button>';
                     }
 
-                    return '<button class="finalizada disabled btn btn-primary" disabled>Em andamento</button>';
+                    //return '<button class="finalizada disabled btn btn-primary" disabled>Em andamento</button>';
+                    return `
+                        <button class="btn btn-primary relatorio-btn" data-id="${data.id}">
+                            <span id="spinner-relatorio-${data.id}" class="spinner-border spinner-border-sm" style="display:none;"></span>
+                            Relatório
+                        </button>
+                        <button id="btn${data.id}" class="btn btn-primary resultado-btn" data-votacao-id="${data.id}">Resultado</button>
+                    `;
                 }
             }
         ],
@@ -114,7 +128,7 @@ $(document).ready(async () => {
             // Adiciona os eventos de clique aos botões de relatório
             $('.relatorio-btn').on('click', function () {
                 let id = $(this).data('id');
-                getRelatorio(id);
+                redirectToRelatorio(id);
             });
 
             // Adiciona os eventos de clique aos botões de resultado

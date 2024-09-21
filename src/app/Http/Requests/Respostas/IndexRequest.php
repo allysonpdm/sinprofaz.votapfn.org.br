@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Respostas;
 
+use ArchCrudLaravel\App\Http\Requests\Traits\IndexRules;
 use Illuminate\Support\Facades\Gate;
 
 class IndexRequest extends RespostasRequest
@@ -23,7 +24,7 @@ class IndexRequest extends RespostasRequest
      */
     public function rules(): array
     {
-        return $this->indexRequest();
+        return $this->indexRules();
     }
 
 }

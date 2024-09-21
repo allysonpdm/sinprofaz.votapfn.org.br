@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\{
 
 abstract class AssociadosRequest extends BaseRequest
 {
-    protected $model = Associados::class;
+    protected string $model = Associados::class;
 
     protected function hasGroupPermission(): bool
     {

@@ -35,7 +35,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    @vite('resources/js/app.js')
     @vite('resources/js/validations.js')
+    @vite('resources/js/carousel.js')
     <style>
         .logoTopoBranca, .logoTopo {
             background-color: transparent !important;
@@ -109,9 +111,7 @@
                 </div>
                 <div class="col-lg-8 mx-auto">
 
-                    <p class="text-faded mb-5" data-subtitle>
-                        Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim
-                        labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet.</p>
+                    <p class="text-faded mb-5" data-subtitle></p>
 
                     <a
                         class="btn btn-primary btn-lg js-scroll-trigger"
@@ -121,7 +121,7 @@
                         <span class="fa fa-file"></span> SOBRE A VOTAÇÃO
                     </a>
 
-                    <BR><BR>
+                    <br><br>
                     <a
                         class="btn btn-primary btn-lg js-scroll-trigger"
                         href="#principal"
@@ -148,13 +148,8 @@
                     </h2>
                     <hr class="light my-4" style="border:1px solid #ffcc28">
 
-                    <p style="font-size:18px; color:gray; line-height:30px" data-description>Lorem ipsum dolor sit amet, officia
-                        excepteur ex fugiat reprehenderit enim
-                        labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi
-                        animcupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est
-                        aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia
-                        pariatur ut officia.
-                    </p><BR>
+                    <p style="font-size:18px; color:gray; line-height:30px" data-description>
+                    </p><br>
 
                     <!-- <a class="btn btn-primary btn-xl js-scroll-trigger" href="edital_lista_triplice_2022.pdf" target="_blank">Edital nº 01/2022 <span class="fa fa-file"></span></a> -->
                     <!-- <a class="btn btn-primary btn-xl js-scroll-trigger" href="edital_lista_triplice_2021-2.pdf" target="_blank">Edital nº 02/2021 <span class="fa fa-file"></span></a> -->
@@ -188,8 +183,7 @@
                 <div class="col-md-12"
                     style="background-color:#105CAB; border-radius:8px; padding:10px; margin-top:-30px">
                     <!-- <h4>SEGUNDA FASE</h4> -->
-                    <p style="font-size:14px; color:white; text-align:center"><b>INSTRUÇÕES:</b><br><br> Caro(a) filiado(a), no quadro abaixo,
-                        digite o seu CPF para validar o acesso ao painel de votação. Em seguida, clique no botão Entrar.</p>
+                    <p style="font-size:14px; color:white; text-align:center"><b>INSTRUÇÕES:</b><br><br> Caro(a) filiado(a), no quadro abaixo, digite o seu CPF para validar o acesso ao painel de votação. Em seguida, clique no botão Entrar.</p>
                 </div>
 
                 <div id="principal" class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">

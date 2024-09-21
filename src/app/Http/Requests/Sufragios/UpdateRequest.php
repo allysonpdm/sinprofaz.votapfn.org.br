@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests\Sufragios;
 
-use App\Rules\{
-    CnpjRule,
-    CpfRule
-};
+use App\Rules\UniqueRestricaoRule;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends SufragiosRequest
 {
@@ -27,11 +25,23 @@ class UpdateRequest extends SufragiosRequest
     public function rules(): array
     {
         return [
-            'nome' => 'string|min:3|max:180|unique:sufragios',
+            'nome' => [
+                'string',
+                'min:3',
+                'max:180',
+                Rule::unique('sufragios', 'nome')->ignore($this->sufragio)
+            ],
             'subtitulo' => 'nullable|string|max:255',
             'descricao' => 'nullable|string|max:1000',
             'inicio' => 'date_format:Y-m-d H:i',
             'fim' => 'date_format:Y-m-d H:i',
+            'restricoes' => [
+                'nullable',
+                'array',
+                new UniqueRestricaoRule
+            ],
+            'restricoes.*.column' => 'required_with:restricoes|string|max:255',
+            'restricoes.*.value' => 'required_with:restricoes|string|max:255'
         ];
     }
 }

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\{
 
 abstract class QuestoesRequest extends BaseRequest
 {
-    protected $model = Questoes::class;
+    protected string $model = Questoes::class;
 
     protected function hasGroupPermission(): bool
     {

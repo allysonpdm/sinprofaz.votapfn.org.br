@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\{
 
 abstract class SufragiosRequest extends BaseRequest
 {
-    protected $model = Sufragios::class;
+    protected string $model = Sufragios::class;
 
     protected function hasGroupPermission(): bool
     {

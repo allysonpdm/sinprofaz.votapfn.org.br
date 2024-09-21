@@ -1,7 +1,6 @@
 {
     "search.exclude": {
-        "**/node_modules": false,
-        "**/vendor": true
+        "**/node_modules": false
     },
     "BracketHighlighter.enableExtension": true
 }

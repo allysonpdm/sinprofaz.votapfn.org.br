@@ -15,7 +15,7 @@ use Illuminate\Http\Response;
 
 class ArquivosController extends BaseController
 {
-    protected $nameService = ArquivosService::class;
+    protected ?string $nameService = ArquivosService::class;
 
     public function store(StoreRequest $request): Response
     {

@@ -5,7 +5,7 @@ namespace App\Http\Requests\Sufragios;
 use App\Rules\BelongsToQuestaoRule;
 use App\Rules\HorarioEleitoralRule;
 use App\Rules\IsFiliadoRule;
-use ArchCrudLaravel\App\Rules\CpfRule;
+use ArchCrudLaravel\App\Rules\CpfValidationRule;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Rule;
 
@@ -43,7 +43,7 @@ class VotarRequest extends SufragiosRequest
                     ->where(function($query){
                         $query->where('sufragioId', $this->sufragioId);
                     }),
-                new CpfRule(),
+                new CpfValidationRule(),
             ],
             'nome' => 'bail|required|string',
             'sufragioId' => [

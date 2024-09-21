@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Database\Seeders\Votacoes\{
+    EstadosSeeder,
     ParticipantesSeeder,
     QuestoesSeeder,
     RespostasSeeder,
@@ -26,6 +27,7 @@ class VotacaoSinprofazOrgBrFactorySeeder extends Seeder
             RespostasSeeder::class,
             ParticipantesSeeder::class,
             UsersSeeder::class,
+            EstadosSeeder::class
         ]);
     }
 }

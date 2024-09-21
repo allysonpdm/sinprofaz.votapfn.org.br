@@ -23,6 +23,6 @@ class ShowRequest extends SufragiosRequest
      */
     public function rules(): array
     {
-        return $this->indexRequest();
+        return [];
     }
 }

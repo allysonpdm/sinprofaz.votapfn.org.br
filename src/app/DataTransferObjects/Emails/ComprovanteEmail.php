@@ -25,51 +25,27 @@ class ComprovanteEmail extends DataTransferObject
         public string $sufragioId,
         public mixed $votos,
     ) {
-        $this->dataHora = date('d/m/Y H:i:s', strtotime($this->dataHora));
+        $this->dataHora = date('d/m/Y \à\s H:i:s', strtotime($this->dataHora));
         $this->cpf = "{$this->cpf[0]}{$this->cpf[1]}{$this->cpf[2]}.{$this->cpf[3]}{$this->cpf[4]}{$this->cpf[5]}.{$this->cpf[6]}{$this->cpf[7]}{$this->cpf[8]}-{$this->cpf[9]}{$this->cpf[10]}";
-        $this->votos = self::votos($this->votos);
     }
 
     public function toEmail(): MailInterface
     {
-        $assunto = "Comprovante de voto";
+        $assunto = "Comprovante de votação";
+        $sufragio = Sufragios::find($this->sufragioId);
 
         return new Mail(
-            remetente: new Remetente(),
+            remetente: new Remetente(nome: 'Vota PFN - SINPROFAZ'),
             destinatario: new Destinatario(email: $this->destinatario),
             assunto: $assunto,
-            msgHtml: "<div style=\"font-size:15px;\">
-                <p>{$this->nome}, segue abaixo o seu comprovante de votação:</p>
-                <p>Comprovante de votação:</p>
-                    <b>CPF:</b> {$this->cpf}<br>
-                    <b>Data e hora:</b> {$this->dataHora}<br>
-                    <b>IP:</b> {$this->ip}<br>
-                    <b>Votação:</b> {$this->votos}
-                <br><br>
-                <p>Atenciosamente,</p>
-                <p>Sistema de votação do SINPROFAZ</p>
-            </div>"
+            msgHtml: view('emails.comprovante', [
+                'nome' => $this->nome,
+                'cpf' => $this->cpf,
+                'dataHora' => $this->dataHora,
+                'ip' => $this->ip,
+                'votos' => $this->votos,
+                'votacao' => $sufragio,
+            ])->render()
         );
-    }
-
-    public function votos(mixed $votos): string
-    {
-        $sufragio = Sufragios::find($this->sufragioId);
-        $str = null;
-        $str = "<b>{$sufragio->nome} {$sufragio->subtitulo}</b>";
-        $str .= "<ul><b>Pergunta:</b>";
-        foreach ($votos as $questao){
-            $str .= "<li>" .
-                Questoes::find($questao['id'])->label .
-                "<br><b>Voto do participante:</b>";
-            $str .= "<ul>";
-            foreach($questao['respostas'] as $resposta){
-                $str .= "<li>" . Respostas::find($resposta['id'])->label . "</li>";
-            }
-            $str .= "</ul>
-            </li>";
-        }
-        $str .= "</ul>";
-        return $str;
     }
 }

@@ -24,9 +24,16 @@ class StoreRequest extends ArquivosRequest
      */
     public function rules(): array
     {
-        $filename = $this->file->getClientOriginalName();
-        $extension = $this->file->extension();
-        $filename = Str::slug(Str::replace('.' . $extension, '', $filename));
+        $file = $this->file('file');
+        $filename = null;
+        $extension = null;
+
+        if ($file) {
+            $filename = $file->getClientOriginalName();
+            $extension = $file->extension();
+            $filename = Str::slug(Str::replace('.' . $extension, '', $filename));
+        }
+
         return [
             'sufragioId' => [
                 'bail',
@@ -34,8 +41,11 @@ class StoreRequest extends ArquivosRequest
                 'integer',
                 'exists:sufragios,id',
                 Rule::unique('arquivos')->where(function ($query) use ($filename, $extension) {
-                    return $query->where('sufragioId', $this->sufragioId)
-                        ->where('filename', $filename . '.' . $extension);
+                    if ($filename && $extension) {
+                        return $query->where('sufragioId', $this->sufragioId)
+                                     ->where('filename', $filename . '.' . $extension);
+                    }
+                    return $query;
                 })
             ],
             'label' => 'bail|required|string|min:3|max:50',

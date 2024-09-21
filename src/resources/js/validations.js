@@ -451,14 +451,17 @@ let setSendVotacao = ()=>{
             element.innerHTML = result.message;
             element.style.display = "flex";
         }else{
-            let comprovante = document.querySelector('#comprovante').innerHTML = `
-                <p>${result.votos}</p>
-                <p><b>ID votação:</b> ${result.sufragioId}</p>
-                <p><b>Filiado:</b> ${result.tratamento ?? ''} ${result.nome}</p>
-                <p><b>CPF:</b> ${result.cpf}</p>
-                <p><b>Data e hora:</b> ${result.dataHora}</p>
-                <p><b>IP:</b> ${result.ip}</p>
-                <p><b>E-mail:</b> ${result.destinatario}</p>
+            document.querySelector('#comprovante').innerHTML = `
+                <p>Prezado(a), ${result.nome}</p>
+                <p>Seu voto foi computado com sucesso. Este comprovante confirma sua participação na votação realizada pelo SINPROFAZ.</p>
+                <p>Abaixo estão os detalhes da sua participação:</p>
+                <ul style="list-style:none;">
+                    <li><b>CPF:</b> ${result.cpf}</li>
+                    <li><b>ID votação:</b> ${result.sufragioId}</li>
+                    <li><b>Data e hora:</b> ${result.dataHora}</li>
+                    <li><b>IP:</b> ${result.ip}</li>
+                    <li><b>Cópia enviada para:</b> ${result.destinatario}</li>
+                </ul>
             `;
             document.querySelector('#encerrar').addEventListener('click',()=>{
                 window.location=`https://sinprofaz.org.br`;

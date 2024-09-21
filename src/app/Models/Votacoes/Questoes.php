@@ -16,7 +16,7 @@ class Questoes extends BaseModel
     public const DELETED_AT = 'deletedAt';
     public $table = 'questoes';
 
-    public static $searchable = [
+    public array $searchable = [
         'sufragioId',
         'label',
         'complemento',

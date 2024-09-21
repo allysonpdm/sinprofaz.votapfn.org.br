@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estado;
 use App\Models\Votacoes\Questoes;
 use App\Models\Votacoes\Respostas;
 use App\Models\Votacoes\Sufragios;
@@ -55,7 +56,8 @@ class HomeController extends Controller
         return view(
             'formVotacao',
             [
-                'votacao' => $sufragio
+                'votacao' => $sufragio,
+                'ufs' => Estado::all()
             ]
         );
     }
@@ -121,4 +123,15 @@ class HomeController extends Controller
             ]
         );
     }
+
+    public function relatorio()
+    {
+        return view(
+            'A4.Portrait.Relatorio',
+            [
+                'sufragio' => Sufragios::find(2)
+            ]
+        );
+    }
+
 }

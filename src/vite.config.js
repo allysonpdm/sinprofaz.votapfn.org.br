@@ -25,6 +25,20 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        terserOptions: {
+            compress: {
+                keep_fnames: true,
+            },
+            mangle: {
+                keep_fnames: true,
+            },
+
+        },
+        rollupOptions: {
+            external: ['datatables.net-dt/css/jquery.dataTables.css']
+        }
+    },
     resolve: {
         alias: {
             vue: 'vue/dist/vue.esm-bundler.js',

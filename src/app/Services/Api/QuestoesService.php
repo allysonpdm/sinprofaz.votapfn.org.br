@@ -8,17 +8,18 @@ use App\Models\Votacoes\{
     Questoes,
 };
 use ArchCrudLaravel\App\Services\BaseService;
+use ArchCrudLaravel\App\Services\Traits\Relationships;
 
 class QuestoesService extends BaseService
 {
-    protected $nameModel = Questoes::class;
-    protected $nameCollection = QuestoesCollection::class;
-    protected $nameResource = QuestoesResource::class;
+    protected ?string $nameModel = Questoes::class;
+    protected ?string $nameCollection = QuestoesCollection::class;
+    protected ?string $nameResource = QuestoesResource::class;
 
     public function __construct()
     {
         parent::__construct();
-        $this->relationships = self::getRelationships($this->model);
+        $this->relationships = self::getRelationshipNames($this->model);
     }
 
 }

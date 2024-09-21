@@ -4,6 +4,8 @@ namespace App\Services\Api;
 
 use App\DataTransferObjects\Emails\ComprovanteEmail;
 use App\DataTransferObjects\Relatorio\Pdf as RelatorioPdf;
+use App\Exceptions\CreateException;
+use App\Exceptions\UpdateException;
 use App\Http\Resources\Votacoes\Sufragios\{
     SufragiosCollection,
     SufragiosResource
@@ -25,14 +27,14 @@ use Illuminate\Http\Response;
 
 class SufragiosService extends BaseService
 {
-    protected $nameModel = Sufragios::class;
-    protected $nameCollection = SufragiosCollection::class;
-    protected $nameResource = SufragiosResource::class;
+    protected ?string $nameModel = Sufragios::class;
+    protected ?string $nameCollection = SufragiosCollection::class;
+    protected ?string $nameResource = SufragiosResource::class;
 
     public function __construct()
     {
         parent::__construct();
-        $this->relationships = self::getRelationships($this->model);
+        $this->relationships = self::getRelationshipNames($this->model);
     }
 
     public function votar(array $request): Response
@@ -104,7 +106,7 @@ class SufragiosService extends BaseService
         ]);
     }
 
-    public function relatorio(int $id)
+    public function relatorioDownload(int $id)
     {
         try {
 
@@ -116,7 +118,7 @@ class SufragiosService extends BaseService
             $dompdf->setOptions(new Options([
                 'isHtml5ParserEnabled' => true,
                 'isRemoteEnabled' => true,
-                'chroot'  => public_path('storage/images'),
+                'chroot' => public_path('storage/images'),
             ]));
             $dompdf->loadHtml($modelo->html());
             $dompdf->render();
@@ -129,6 +131,65 @@ class SufragiosService extends BaseService
         }catch(Exception $exception){
             return $this->exceptionTreatment($exception);
         }
+    }
+
+    public function relatorio(int $id)
+    {
+        try {
+
+            $sufragio = Sufragios::findOrFail($id);
+
+            return view(
+                'A4.Portrait.Relatorio',
+                [
+                    'sufragio' => $sufragio
+                ]
+            );
+        }catch(Exception $exception){
+            return $this->exceptionTreatment($exception);
+        }
+    }
+
+    protected function insert()
+    {
+        if (empty($this->request)) {
+            throw new CreateException;
+        }
+        $this->model = $this->model::create($this->request);
+
+        if(!empty($this->request['restricoes'])){
+            foreach($this->request['restricoes'] as $restricao){
+                $this->model->restricoes()->create($restricao);
+            }
+        }
+
+        return $this;
+    }
+
+    protected function modify()
+    {
+        if (empty($this->request)) {
+            throw new UpdateException;
+        }
+
+        if (
+            array_key_exists($this->model::DELETED_AT, $this->request) &&
+            $this->request[$this->model::DELETED_AT] === null &&
+            $this->register->{$this->model::DELETED_AT} !== $this->request[$this->model::DELETED_AT]
+        ) {
+            $this->reactivate();
+        }
+        $this->register->update($this->request);
+
+        if(!empty($this->request['restricoes'])){
+            $this->register->restricoes()->delete();
+
+            foreach($this->request['restricoes'] as $restricao){
+                $this->register->restricoes()->create($restricao);
+            }
+        }
+
+        return $this;
     }
 
 }

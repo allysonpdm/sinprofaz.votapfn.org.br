@@ -16,7 +16,7 @@ class Respostas extends BaseModel
     public const DELETED_AT = 'deletedAt';
     public $table = 'respostas';
 
-    public static $searchable = [
+    public array $searchable = [
         'questaoId',
         'label',
     ];
