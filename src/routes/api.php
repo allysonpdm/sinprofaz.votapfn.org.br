@@ -31,6 +31,7 @@ Route::name('sufragios.')->prefix('sufragios/')->group(function () {
     Route::post('votar', [SufragiosController::class, 'votar']);
     Route::get('relatorio/{sufragioId}', [SufragiosController::class, 'relatorio']);
     Route::get('download/relatorio/{sufragioId}', [SufragiosController::class, 'relatorioDownload']);
+    Route::post('comprovante', [SufragiosController::class, 'comprovante']);
 });
 Route::get('sufragios/em-andamento', [SufragiosController::class, 'emAndamento']);
 Route::get('sufragios/encerradas', [SufragiosController::class, 'encerradas']);

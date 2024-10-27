@@ -26,6 +26,22 @@ async function sendSufragio(){
     });
 };
 
+async function sendComprovante(){
+    let url = `/api/sufragios/comprovante`;
+    return fetch(`${url}`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/pdf',
+            'Content-Type': 'application/json'
+        },
+        body: votar()
+    })
+    .then(response => {return response;})
+    .catch(error => {
+        console.error(error);
+    });
+};
+
 async function getSufragio(){
     let url = `/api/sufragios/${votacaoId}`;
     return fetch(`${url}`, {
@@ -113,13 +129,14 @@ let setVotacao = async ()=>{
     if(response.status != 200){
         desabilitarElemento('#entrar');
         let element = document.querySelector(`[data-erro="votacao"]`)
-        element.innerHTML = result.message != null ? result.message : 'Votação não existe — Certifique-se que o link esteja correto!';
+        element.innerHTML = result.message != null ? result.message : 'A votação não existe — Certifique-se que o link esteja correto!';
         element.style.display = "flex";
     }else{
         window.VOTACAO = {
             'sufragioId': result.id
         };
         setSendVotacao();
+        setDownloadComprovante();
         setTitle(result.nome);
         setSubtitle(result.subtitulo);
         setDescription(result.descricao);
@@ -174,7 +191,7 @@ let setQuestoes = (questoes)=>{
     divButton.style.display = 'none';
 
     btnVotar.setAttribute('id', 'votar');
-    btnVotar.classList.add('btn', 'btn-primary');
+    btnVotar.classList.add('btn', 'btn-primary', 'm-3');
     btnVotar.textContent = 'Votar';
 
     divButton.append(btnVotar);
@@ -257,7 +274,7 @@ let setRespostas = (questaoId, respostas, target) => {
         label.setAttribute('for', `resposta-${questaoId}-${value.id}`);
 
         input.classList.add('form-check-input', 'mr-2');
-        label.classList.add('form-check-label');
+        label.classList.add('form-check-label', 'ml-2');
         p.classList.add('form-check');
         p.style.display = 'inline-flex';
 
@@ -383,7 +400,7 @@ let verificarPreenchimento = (questoes)=>{
 };
 
 let confirmar = (questoes)=>{
-    getEmail();
+    //getEmail();
     getEscolhas(questoes);
     window.GABARITO.show();
 };
@@ -432,7 +449,7 @@ let getEscolhas = (questoes)=>{
 };
 
 let votar = ()=>{
-    getEmail();
+    // getEmail();
     window.VOTACAO.nome = window.ASSOCIADO.nome
     window.VOTACAO.cpf = window.ASSOCIADO.cpf;
     return JSON.stringify(window.VOTACAO);
@@ -460,7 +477,6 @@ let setSendVotacao = ()=>{
                     <li><b>ID votação:</b> ${result.sufragioId}</li>
                     <li><b>Data e hora:</b> ${result.dataHora}</li>
                     <li><b>IP:</b> ${result.ip}</li>
-                    <li><b>Cópia enviada para:</b> ${result.destinatario}</li>
                 </ul>
             `;
             document.querySelector('#encerrar').addEventListener('click',()=>{
@@ -470,6 +486,47 @@ let setSendVotacao = ()=>{
         }
         desabilitarElemento('#votar')
         desabilitarElemento('#confirmar')
+    });
+}
+
+let setDownloadComprovante = () => {
+    let comprovante = document.querySelector('#download-comprovante');
+    comprovante.addEventListener('click', async () => {
+        spinnerShow('spinner-download-comprovante');
+
+        try {
+            // Faz a requisição e espera um arquivo PDF como resposta
+            let response = await sendComprovante();
+
+            // Para de exibir o spinner
+            spinnerStop('spinner-download-comprovante');
+            window.GABARITO.hide();
+
+            if (response.status != 200) {
+                // Lê a resposta como JSON se houver erro
+                let result = await response.json();
+                let element = document.querySelector(`[data-erro="votacao"]`);
+                element.innerHTML = result.message;
+                element.style.display = "flex";
+            } else {
+                // Cria um Blob com a resposta, que é o PDF
+                let blob = await response.blob();
+                let downloadUrl = URL.createObjectURL(blob);
+
+                // Cria um link temporário para iniciar o download do PDF
+                let link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = "comprovante.pdf";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(downloadUrl); // Libera o URL para liberar memória
+            }
+        } catch (error) {
+            console.error("Erro ao fazer o download:", error);
+        }
+
+        desabilitarElemento('#comprovante');
     });
 }
 

@@ -9,7 +9,7 @@ use ArchCrudLaravel\App\Rules\CpfValidationRule;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Rule;
 
-class VotarRequest extends SufragiosRequest
+class ComprovanteRequest extends SufragiosRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,8 +34,8 @@ class VotarRequest extends SufragiosRequest
                 'required',
                 'digits:11',
                 new IsFiliadoRule,
-                Rule::unique('participantes', 'cpf')
-                    ->where(function($query){
+                Rule::exists('participantes', 'cpf')
+                    ->where(function ($query) {
                         $query->where('sufragioId', $this->sufragioId);
                     }),
                 new CpfValidationRule(),
@@ -48,26 +48,25 @@ class VotarRequest extends SufragiosRequest
                 'exists:sufragios,id',
                 new HorarioEleitoralRule($this->sufragioId)
             ],
-            'questoes' => 'bail|required|array',
+            'questoes' => 'bail|nullable|array',
             'questoes.*.id' => [
                 'bail',
                 'integer',
-                Rule::exists('questoes', 'id')
-                    ->where(function($query){
-                        $query->where('sufragioId', $this->sufragioId);
-                    })
+                Rule::exists('questoes', 'id')->where(function ($query) {
+                    $query->where('sufragioId', $this->sufragioId);
+                }),
             ],
             'questoes.*.respostas' => [
                 'bail',
-                'required',
+                'required_with:questoes',
                 'array',
             ],
             'questoes.*.respostas.*.id' => [
                 'bail',
-                'required',
+                'required_if:questoes,*',
                 'integer',
                 'exists:respostas,id',
-                new BelongsToQuestaoRule($this->questoes)
+                new BelongsToQuestaoRule($this->questoes),
             ]
         ];
     }

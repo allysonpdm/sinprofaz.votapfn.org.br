@@ -12,7 +12,7 @@ class BelongsToQuestaoRule implements Rule
      *
      * @return void
      */
-    public function __construct(protected array $questoes)
+    public function __construct(protected ?array $questoes)
     {
         //
     }
@@ -26,6 +26,10 @@ class BelongsToQuestaoRule implements Rule
      */
     public function passes($attribute, $value)
     {
+        if($value === null) {
+            return true;
+        }
+
         $s = explode('.', $attribute);
         $key = $s[1];
         return  Respostas::find($value)->questao->id == $this->questoes[$key]['id'];

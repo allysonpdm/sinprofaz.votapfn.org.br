@@ -20,6 +20,7 @@ class RespostasService extends BaseService
     {
         parent::__construct();
         $this->relationships = self::getRelationshipNames($this->model);
+        $this->onCache = false;
     }
 
 }

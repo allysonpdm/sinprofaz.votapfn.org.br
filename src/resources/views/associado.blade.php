@@ -10,9 +10,6 @@
 
     <title>{{ config('app.name') }}</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
     <!-- Custom fonts for this template -->
@@ -254,17 +251,18 @@
                     <div id="escolhas">
 
                     </div>
+                    <!--
                     <label for="email" class="form-label">Informe um email para receber o seu comprovante:</label>
                     <input id="email" type="email" class="form-control" placeholder="E-mail"
                         aria-describedby="emailHelp">
-                    <!--
+
                     <div id="emailHelp" class="form-text">
                         Caso queira, você pode informar um outro e-mail para receber o seu comprovante.
                     </div>
                     -->
                 </div>
                 <div class="modal-footer">
-                    <button id="voltar" type="button" class="btn btn-danger close"
+                    <button id="voltar" type="button" class="close btn btn-secondary"
                         data-dismiss="modal">Voltar</button>
                     <button id="confirmar" type="button" class="btn btn-success" data-dismiss="modal">
                         <span id="spinner-confirmar" class="spinner-border spinner-border-sm"
@@ -287,8 +285,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="encerrar" type="button" class="btn btn-primary"
-                        data-dismiss="modal">Encerrar</button>
+                    <button id="download-comprovante" type="button" class="btn btn-success">
+                        <span id="spinner-download-comprovante" class="spinner-border spinner-border-sm" style="display:none;"></span>
+                        Baixar o Comprovante
+                    </button>
+                    <button id="encerrar" type="button" class="btn btn-primary" data-dismiss="modal">Encerrar</button>
                 </div>
             </div>
         </div>

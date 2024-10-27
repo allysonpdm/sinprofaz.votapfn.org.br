@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="voltar" type="button" class="btn btn-danger close" data-dismiss="modal">Voltar</button>
+                    <button id="voltar" type="button" class="close btn btn-danger" data-dismiss="modal">Voltar</button>
                 </div>
             </div>
         </div>

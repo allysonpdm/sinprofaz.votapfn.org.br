@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use ArchCrudLaravel\App\Http\Controllers\BaseController;
 use App\Http\Requests\Sufragios\{
+    ComprovanteRequest,
     DeleteRequest,
     IndexRequest,
     RelatorioRequest,
@@ -51,6 +52,11 @@ class SufragiosController extends BaseController
             ...$request->validated(),
             'ip' => $request->ip()
         ]);
+    }
+
+    public function comprovante(ComprovanteRequest $request): Response
+    {
+        return $this->service->comprovante($request->validated());
     }
 
     public function relatorioDownload(int $id): Response

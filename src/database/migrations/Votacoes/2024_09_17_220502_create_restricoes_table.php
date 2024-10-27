@@ -15,7 +15,7 @@ class CreateRestricoesTable extends Migration
     {
         Schema::create('restricoes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sufragioId');
+            $table->unsignedBigInteger('sufragioId');
             $table->string('column');
             $table->string('value');
             $table->timestamp('createdAt')->useCurrent();

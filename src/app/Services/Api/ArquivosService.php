@@ -23,6 +23,7 @@ class ArquivosService extends BaseService
     {
         parent::__construct();
         $this->relationships = self::getRelationshipNames($this->model);
+        $this->onCache = false;
     }
 
     protected function beforeInsert()
